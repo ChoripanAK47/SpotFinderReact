@@ -11,7 +11,7 @@ const SpotCard = ({ spot }) => {
           <img 
             src={fotosUrls[0]} 
             alt={`Foto de ${nombre}`} 
-            className="card-img-top"
+            className="card-img-top shadow-sm"
             style={{ height: '200px', objectFit: 'cover' }}
             onError={(e) => { e.target.onerror = null; e.target.src='[https://placehold.co/600x400/CCCCCC/FFFFFF?text=Spot](https://placehold.co/600x400/CCCCCC/FFFFFF?text=Spot)'; }}
           />
@@ -19,7 +19,7 @@ const SpotCard = ({ spot }) => {
             <h5 className="card-title fw-bold text-truncate">{nombre}</h5>
             <p className="card-text text-muted">{comuna}</p>
             <div className="d-grid">
-              <button className="btn btn-success fw-semibold">Conocer</button>
+              <button className="btn btn-success fw-semibold shadow-sm">Conocer</button>
             </div>
           </div>
         </Link>

@@ -3,13 +3,13 @@ import { Link, NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark sticky-top" style={{ backgroundColor: '#06402B' , opacity: 0.95}}>
+    <nav className="navbar navbar-expand-lg navbar-dark sticky-top" style={{ backgroundColor: '#175536ff' , opacity: 0.98}}>
       <div className="container-fluid">
         <Link className="navbar-brand d-flex align-items-center" to="/">
-          <div className="bg-white p-1 rounded me-2">
+          <div className="">
             <img src="/Logo_SpotFinder.png" alt="Logo de SpotFinder"/>
           </div>
-          <span className="fw-bold fs-5">SpotFinder</span>
+          <span className="fw-bold fs-5"></span>
         </Link>
         
         <div className="collapse navbar-collapse">
@@ -18,7 +18,7 @@ const Navbar = () => {
               <NavLink className="nav-link" to="/">Spots</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/el_mapa">Mapa de Spots</NavLink>
+              <NavLink className="nav-link" to="/mapa">Mapa de Spots</NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/perfil">Lugares Guardados</NavLink>

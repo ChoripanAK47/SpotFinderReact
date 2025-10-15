@@ -7,7 +7,7 @@ const Sidebar = () => {
         <img 
           src="/GatoPrisma.gif"
           alt="Avatar de usuario" 
-          className="mx-auto mb-3 sidebar-avatar"
+          className="mx-auto"
         />
         <h5 className="card-title fw-bold">Bienvenido a SpotFinder</h5>
         <p className="card-text text-muted small mb-4">

@@ -13,11 +13,36 @@ const SpotDetailPage = () => {
   return (
     <div className="card shadow-sm">
       <div className="card-body p-4">
-        <img 
-          src={spot.fotosUrls[0]} 
-          alt={`Foto de ${spot.nombre}`} 
-          className="img-fluid rounded mb-4"
-        />
+        {/* Carrusel de fotos */}
+        <div id="carouselExample" className="carousel slide mb-4" data-bs-ride="carousel">
+          <div className="carousel-inner">
+            {spot.fotosUrls.map((foto, idx) => (
+              <div
+                className={`carousel-item${idx === 0 ? ' active' : ''}`}
+                key={idx}
+              >
+                <img
+                  src={foto}
+                  className="d-block w-100"
+                  alt={`Foto ${idx + 1} de ${spot.nombre}`}
+                  style={{ maxHeight: '400px', objectFit: 'cover' }}
+                />
+              </div>
+            ))}
+          </div>
+          {spot.fotosUrls.length > 1 && (
+            <>
+              <button className="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span className="visually-hidden">Anterior</span>
+              </button>
+              <button className="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                <span className="visually-hidden">Siguiente</span>
+              </button>
+            </>
+          )}
+        </div>
         <h1 className="card-title h2 fw-bold">{spot.nombre}</h1>
         <h2 className="text-muted mb-4">{spot.comuna}</h2>
         <p>{spot.descripcion}</p>
