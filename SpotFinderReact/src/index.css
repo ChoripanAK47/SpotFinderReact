@@ -1,7 +1,7 @@
 /* Este archivo es para estilos que Bootstrap no cubre o que queremos sobreescribir */
 
 body {
-  background-color: #1d6d3c; /* Verde oscuro de fondo */
+  background-color: #3af883; /* Verde oscuro de fondo */
   background-image: url('/Fondo_Home.jpg'); /* Imagen de fondo */
 }
 

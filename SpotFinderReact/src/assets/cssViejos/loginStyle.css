@@ -1,36 +1,15 @@
-body{
-    background-image: url(../img/Fondo\ con\ logo.jpg) ;
+.carta-dinamica {
+  width: 100%;
+  max-width: 700px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(3, 186, 231, 0.5); /* sombra verde inicial */
+  padding: 40px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin: 40px auto;
 }
-.fondo-section{
-    background-color: rgb(255, 255, 255);
-    border-radius: 100px;
-    box-shadow: 2px 6px 100px #130a0a;
-    padding: 30px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: bold;
-}
-.Subtitulo{
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    border-bottom: 1px solid black;
-}
-.forma-cuadro{
-    background-color: rgb(255, 255, 255);
-    border-radius: 20px;
-    box-shadow: 2px 6px 100px #130a0a;
-    padding: 30px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: bold;
-    max-width: 400px;
-    padding: 20px;
-}
-.logo-navbar{
-    width: 165px;
-    height: auto;
-    background-color: aliceblue;
-    border-radius: 30px;
-    border: 5px solid rgb(255, 255, 255);
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+
+.carta-dinamica:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 32px rgba(255, 0, 0, 0.25); /* sombra roja al hover */
 }

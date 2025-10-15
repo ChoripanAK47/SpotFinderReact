@@ -27,8 +27,10 @@ const Navbar = () => {
         </div>
 
         <div className="d-flex align-items-center">
-          <Link to="/login" className="nav-link text-white me-3">Mi Cuenta</Link>
+          <Link to="/User" className="nav-link text-white me-3">Mi Cuenta</Link>
+          <Link to="/login">
           <button className="btn btn-danger btn-sm">Cerrar Sesión</button>
+          </Link>
         </div>
       </div>
     </nav>
