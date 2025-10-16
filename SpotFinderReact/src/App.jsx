@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import Layout from './components/Layout';
 import MapPage from './pages/MapPage';
 import User from './pages/User';
+import Nosotros from './pages/Nosotros';
 import CreateAccount from './pages/CreateAccount';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path="/perfil" element={<Layout><ProfilePage /></Layout>} />
 
           {/* Ruta de login sin sidebar */}
+          <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/User" element={<User />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/CreateAccount" element={<CreateAccount />} />
