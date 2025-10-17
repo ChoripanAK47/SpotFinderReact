@@ -47,7 +47,7 @@
 #nombreCompleto {
   font-size: 1.6rem;
   font-weight: bold;
-  color: #175536;
+  color: #095D59;
 }
 
 /* Subtítulo */
@@ -73,6 +73,6 @@
 }
 
 .btn-outline-danger:hover {
-  background-color: #dc3545;
+  background-color: #881600;
   color: #fcfbfb;
 }

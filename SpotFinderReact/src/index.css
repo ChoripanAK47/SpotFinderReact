@@ -1,13 +1,13 @@
 /* Este archivo es para estilos que Bootstrap no cubre o que queremos sobreescribir */
 
 body {
-  background-color: #3af883; /* Verde oscuro de fondo */
+  background-color: aliceblue; /* Verde oscuro de fondo */
   background-image: url('/Fondo_Home.jpg'); /* Imagen de fondo */
 }
 
 :root {
-  --bs-success: #157A6E; /* Verde principal para botones */
-  --bs-success-rgb: 29, 109, 60;
+  --bs-success: #C16200; /* Verde principal para botones */
+  --bs-success-rgb: 19, 51, 92;
 }
 #root {
   max-width: 100%;
@@ -43,15 +43,19 @@ body {
   --bs-btn-hover-border-color: #CDCDCD;
 }
 
-.text-success {
-  color: #157A6E;
-}
 
 .btn-success {
   --bs-btn-bg: var(--bs-success);
   --bs-btn-border-color: var(--bs-success);
-  --bs-btn-hover-bg: #247B7B;
-  --bs-btn-hover-border-color: #247B7B;
+  --bs-btn-hover-bg: #095D59;
+  --bs-btn-hover-border-color: #095D59;
+}
+
+.btn-danger {
+  --bs-btn-bg: #881600;
+  --bs-btn-border-color: #CDCDCD;
+  --bs-btn-hover-bg: #C16200;
+  --bs-btn-hover-border-color: #C16200;
 }
 
 .navbar-brand img {
