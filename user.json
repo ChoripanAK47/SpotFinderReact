@@ -1,0 +1,18 @@
+{
+  "total_users": [
+    {
+      "user_id": 1001,
+      "nombre": "Lucía Fernández",
+      "email": "lucia@example.com",
+      "contraseña": "lucia123",
+      "genero": "Mujer"
+    },
+    {
+      "user_id": 1002,
+      "nombre": "Tomás Rivas",
+      "email": "tomas@example.com",
+      "contraseña": "tomas456",
+      "genero": "Hombre"
+    }
+  ]
+}

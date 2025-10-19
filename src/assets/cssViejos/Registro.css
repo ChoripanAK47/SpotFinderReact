@@ -1,0 +1,16 @@
+.carta-dinamica {
+  width: 100%;
+  max-width: 700px; /* más ancho para contener el formulario */
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 255, 34, 0.5);
+  padding: 40px; /* espacio interno ritual */
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin: 40px auto;
+
+}
+
+.carta-dinamica:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 32px rgba(224, 0, 0, 0.25);
+}
