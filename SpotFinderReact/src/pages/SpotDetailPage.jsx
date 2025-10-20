@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { spots } from '../data';
 
@@ -24,6 +24,12 @@ const StarRating = ({ rating, label }) => {
 const SpotDetailPage = () => {
   const { id } = useParams();
   const spot = spots.find(s => s.spotId === id);
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleSaveClick = () => {
+    setIsSaved(!isSaved);
+    // Aquí iría la lógica para guardar/quitar el spot en una lista global o localStorage
+  };
 
   if (!spot) {
     return <div>Spot no encontrado</div>;
@@ -36,16 +42,8 @@ const SpotDetailPage = () => {
         <div id="carouselExample" className="carousel slide mb-4" data-bs-ride="carousel">
           <div className="carousel-inner rounded">
             {spot.fotosUrls.map((foto, idx) => (
-              <div
-                className={`carousel-item${idx === 0 ? ' active' : ''}`}
-                key={idx}
-              >
-                <img
-                  src={foto}
-                  className="d-block w-100"
-                  alt={`Foto ${idx + 1} de ${spot.nombre}`}
-                  style={{ maxHeight: '450px', objectFit: 'cover' }}
-                />
+              <div className={`carousel-item${idx === 0 ? ' active' : ''}`} key={idx}>
+                <img src={foto} className="d-block w-100" alt={`Foto ${idx + 1} de ${spot.nombre}`} style={{ maxHeight: '450px', objectFit: 'cover' }} />
               </div>
             ))}
           </div>
@@ -62,9 +60,30 @@ const SpotDetailPage = () => {
             </>
           )}
         </div>
-
-        <h1 className="card-title h2 fw-bold">{spot.nombre}</h1>
-        <h2 className="text-muted mb-4">{spot.comuna}</h2>
+        
+        {/* Cabecera con Título y Botón Corazón */}
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h1 className="card-title h2 fw-bold mb-1">{spot.nombre}</h1>
+            <h2 className="text-muted">{spot.comuna}</h2>
+          </div>
+          <button
+            onClick={handleSaveClick}
+            className="btn btn-link text-secondary p-0"
+            style={{ fontSize: '1.75rem' }}
+            title={isSaved ? 'Quitar de guardados' : 'Guardar Spot'}  
+          >
+            {isSaved ? (
+              <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="28" height="28" fill="#dc3545" className="bi bi-heart-fill" viewBox="0 0 16 16">
+                <path fillRule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+              </svg>
+            ) : (
+              <svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" width="28" height="28" fill="currentColor" className="bi bi-heart" viewBox="0 0 16 16">
+                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-1.113 2.175-.229 4.816 2.028 6.941L8 16.011l4.571-6.017c2.257-2.125 3.141-4.766 2.028-6.941C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15.122l-4.286-5.632C1.564 7.273.666 5.143 1.63 3.422c.965-1.724 3.595-2.206 5.253-.385L8 4.001l1.117-1.964c1.658-1.82 4.288-1.34 5.253.385.965 1.724-.066 3.85-2.332 5.968L8 15.122z"/>
+              </svg>
+            )}
+          </button>
+        </div>
 
         <hr className="my-4" />
 
@@ -88,14 +107,12 @@ const SpotDetailPage = () => {
 
         <hr className="my-4" />
 
-        {/* Descripción con párrafos separados */}
         <div>
           <h5 className="fw-bold mb-3">Descripción</h5>
           {spot.descripcion.split('\n').map((paragraph, index) => (
             paragraph.trim() !== '' && <p key={index} className="mb-3">{paragraph}</p>
           ))}
         </div>
-
       </div>
     </div>
   );

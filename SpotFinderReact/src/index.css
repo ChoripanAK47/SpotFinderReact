@@ -1,13 +1,11 @@
-/* Este archivo es para estilos que Bootstrap no cubre o que queremos sobreescribir */
-
 body {
-  background-color: aliceblue; /* Verde oscuro de fondo */
-  background-image: url('/Fondo_Home.jpg'); /* Imagen de fondo */
+  background-color: aliceblue;
+  background-image: url('/Fondo_Home.jpg');
 }
 
 :root {
-  --bs-success: #C16200; /* Verde principal para botones */
-  --bs-success-rgb: 19, 51, 92;
+  --bs-success: #C16200;
+  --bs-success-rgb: 19, 49, 92;
 }
 #root {
   max-width: 100%;
@@ -49,6 +47,8 @@ body {
   --bs-btn-border-color: var(--bs-success);
   --bs-btn-hover-bg: #095D59;
   --bs-btn-hover-border-color: #095D59;
+  --bs-btn-active-bg:  #C16200;
+  --bs-btn-active-border-color: var(--bs-btn-active-bg);
 }
 
 .btn-danger {
