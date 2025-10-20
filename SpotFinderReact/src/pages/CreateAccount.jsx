@@ -1,75 +1,175 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import '../assets/cssViejos/Registro.css'; // Asegúrate que este archivo contenga las clases necesarias
+// CreateAccountPage.jsx
+
+import React, { useState } from 'react'; 
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../components/AuthContext'; // <--- Ajusta la ruta si es necesario
+import '../assets/cssViejos/Registro.css';
 
 const CreateAccountPage = () => {
-  return (
-    <div className="fondo-blanco-dinamico">
-      <main className="d-flex justify-content-center align-items-start pt-5">
-        <section className="container my-2 w-50 p-3 fondo-section carta-dinamica">
-          <form className="row g-3">
-            <div className="mb-4 text-center">
-              <h1 className="fs-2 fw-bold Titulo">Bienvenido a SpotFinder</h1>
-              <hr style={{ borderTop: '2px solid black', width: '500px', margin: '0 auto 10px' }} />
+    // 1. Obtener funciones y hooks
+    const { createAccount } = useAuth();
+    const navigate = useNavigate();
 
-              <div className="linea-negra"></div>
-              <p className="fs-6 text-muted Subtitulo">
-                Crea tu cuenta para comenzar a explorar los mejores lugares
-              </p>
-                <hr style={{ borderTop: '2px solid black', width: '590px', margin: '0 auto 1px' }} />
-            </div>
+    // 2. Estado para los campos del formulario
+    const [formData, setFormData] = useState({
+        nombreCompleto: '',
+        email: '',
+        password: '',
+        passwordConfirm: '',
+        genero: 'Tu Género:',
+        aceptaTerminos: false,
+    });
+    const [error, setError] = useState('');
 
-            <div className="col-md-4">
-              <label htmlFor="nombreCompleto" className="form-label">Nombre Completo:</label>
-              <input type="text" className="form-control" id="nombreCompleto" required placeholder="Ingresa tu nombre" />
-            </div>
+    // 3. Manejar los cambios en los inputs
+    const handleChange = (e) => {
+        const { id, value, type, checked } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [id]: type === 'checkbox' ? checked : value,
+        }));
+    };
 
-            <div className="col-md-6">
-              <label htmlFor="Correo" className="form-label">Email</label>
-              <input type="email" className="form-control" id="Correo" required placeholder="Ingresa tu email" />
-            </div>
+    // 4. Manejar el envío del formulario
+    const handleSubmit = (e) => {
+        e.preventDefault(); 
+        setError('');
 
-            <div className="col-md-6">
-              <label htmlFor="password1" className="form-label">Contraseña:</label>
-              <input type="password" className="form-control" id="password1" required placeholder="Ingresa tu contraseña" />
-            </div>
+        // Validaciones locales
+        if (formData.password !== formData.passwordConfirm) {
+            setError("Las contraseñas no coinciden.");
+            return;
+        }
+        if (!formData.aceptaTerminos) {
+            setError("Debes aceptar los términos y condiciones.");
+            return;
+        }
 
-            <div className="col-md-6">
-              <label htmlFor="password2" className="form-label">Confirma contraseña:</label>
-              <input type="password" className="form-control" id="password2" required placeholder="Confirma tu contraseña" />
-            </div>
+        // Llamada al AuthContext
+        const result = createAccount({
+            nombreCompleto: formData.nombreCompleto,
+            email: formData.email, 
+            password: formData.password,
+            genero: formData.genero,
+        });
 
-            <div className="col-12">
-              <select className="form-select form-select-lg mb-3" id="genero" aria-label="Large select example">
-                <option selected disabled>Tu Género:</option>
-                <option value="Hombre">Hombre</option>
-                <option value="Mujer">Mujer</option>
-                <option value="Otro">Otro</option>
-              </select>
-            </div>
+        // Manejar el resultado y redirigir
+        if (result.success) {
+            alert("¡Registro exitoso! Redirigiendo a iniciar sesión.");
+            navigate("/login"); 
+        } else {
+            setError(result.message);
+        }
+    };
 
-            <div className="col-12">
-              <div className="form-check">
-                <input className="form-check-input" type="checkbox" id="gridCheck" />
-                <label className="form-check-label" htmlFor="gridCheck">
-                  Acepto los términos y condiciones
-                  <div className="IniciarSesion">
-                    ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
-                  </div>
-                </label>
-              </div>
-            </div>
+    return (
+        <div className="fondo-blanco-dinamico">
+            <main className="d-flex justify-content-center align-items-start pt-5">
+                <section className="container my-2 w-50 p-3 fondo-section carta-dinamica">
+                    {/* ASIGNAR EL MANEJADOR DE ENVÍO */}
+                    <form className="row g-3" onSubmit={handleSubmit}> 
+                        {/* ... (Tu encabezado) ... */}
 
-            <div className="col-12">
-              <button type="button" className="button" onClick={() => console.log('registroUsuario()')}>
-                Registrarse
-              </button>
-            </div>
-          </form>
-        </section>
-      </main>
-    </div>
-  );
+                        {/* Mostrar mensaje de error */}
+                        {error && <p className="text-danger text-center col-12">{error}</p>}
+
+                        {/* CONEXIÓN DE INPUTS (Asegúrate de que el 'id' y 'onChange' coincidan) */}
+                        <div className="col-md-4">
+                            <label htmlFor="nombreCompleto" className="form-label">Nombre Completo:</label>
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                id="nombreCompleto" 
+                                value={formData.nombreCompleto}
+                                onChange={handleChange}
+                                required 
+                                placeholder="Ingresa tu nombre" 
+                            />
+                        </div>
+
+                        <div className="col-md-6">
+                            <label htmlFor="email" className="form-label">Email</label>
+                            <input 
+                                type="email" 
+                                className="form-control" 
+                                id="email" 
+                                value={formData.email}
+                                onChange={handleChange}
+                                required 
+                                placeholder="Ingresa tu email" 
+                            />
+                        </div>
+
+                        <div className="col-md-6">
+                            <label htmlFor="password" className="form-label">Contraseña:</label>
+                            <input 
+                                type="password" 
+                                className="form-control" 
+                                id="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required 
+                                placeholder="Ingresa tu contraseña" 
+                            />
+                        </div>
+
+                        <div className="col-md-6">
+                            <label htmlFor="passwordConfirm" className="form-label">Confirma contraseña:</label>
+                            <input 
+                                type="password" 
+                                className="form-control" 
+                                id="passwordConfirm"
+                                value={formData.passwordConfirm}
+                                onChange={handleChange}
+                                required 
+                                placeholder="Confirma tu contraseña" 
+                            />
+                        </div>
+
+                        <div className="col-12">
+                            <select 
+                                className="form-select form-select-lg mb-3" 
+                                id="genero"
+                                value={formData.genero}
+                                onChange={handleChange} 
+                                aria-label="Large select example"
+                            >
+                                <option disabled>Tu Género:</option>
+                                <option value="Hombre">Hombre</option>
+                                <option value="Mujer">Mujer</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+
+                        <div className="col-12">
+                            <div className="form-check">
+                                <input 
+                                    className="form-check-input" 
+                                    type="checkbox" 
+                                    id="aceptaTerminos" 
+                                    checked={formData.aceptaTerminos}
+                                    onChange={handleChange}
+                                />
+                                <label className="form-check-label" htmlFor="aceptaTerminos">
+                                    Acepto los términos y condiciones
+                                    <div className="IniciarSesion">
+                                        ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div className="col-12">
+                            {/* CAMBIAR A type="submit" */}
+                            <button type="submit" className="button">
+                                Registrarse
+                            </button>
+                        </div>
+                    </form>
+                </section>
+            </main>
+        </div>
+    );
 };
 
 export default CreateAccountPage;
