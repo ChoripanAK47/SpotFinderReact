@@ -1,12 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../components/AuthContext';
 import '../assets/cssViejos/perfil.css'; 
 import fotoPerfil from '../assets/images/fotoperfil.jpg';
 
 const User = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth(); // ✅ Accede al usuario desde el contexto
 
   const handleLogout = () => {
+    logout(); // ✅ Limpia el usuario del contexto
     navigate('/login');
   };
 
@@ -22,21 +25,22 @@ const User = () => {
           />
 
           {/* Nombre y estado */}
-          <h4 id="nombreCompleto" className="mt-3">Nombre</h4>
+          <h4 id="nombreCompleto" className="mt-3">
+            {user?.nombreCompleto || "Nombre"}
+          </h4>
           <hr style={{ borderTop: '2px solid black', width: '550px', margin: '0 auto 20px' }} />
 
           <p className="text-muted">Usuario Promedio de SpotFinder</p>
           <span className="badge bg-success mb-3">Activo</span>
-           <hr style={{ borderTop: '2px solid black', width: '550px', margin: '0 auto 20px' }} />
-
+          <hr style={{ borderTop: '2px solid black', width: '550px', margin: '0 auto 20px' }} />
 
           {/* Datos del usuario */}
           <ul className="list-group list-group-flush text-start mb-4">
             <li className="list-group-item bg-transparent border-0">
-              <strong>Correo:</strong> <span id="Correo"></span>
+              <strong>Correo:</strong> <span>{user?.email || "Sin correo"}</span>
             </li>
             <li className="list-group-item bg-transparent border-0">
-              <strong>Género:</strong> <span id="genero"></span>
+              <strong>Género:</strong> <span>{user?.genero || "Sin género"}</span>
             </li>
           </ul>
 
