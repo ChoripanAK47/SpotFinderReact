@@ -3,7 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark sticky-top" style={{ backgroundColor: '#175536ff' , opacity: 0.98}}>
+    <nav className="navbar navbar-expand-lg navbar-dark sticky-top">
       <div className="container-fluid">
         <Link className="navbar-brand d-flex align-items-center" to="/">
           <div className="">
@@ -22,6 +22,9 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/perfil">Lugares Guardados</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/nosotros">Nosotros</NavLink>
             </li>
           </ul>
         </div>

@@ -1,13 +1,11 @@
-/* Este archivo es para estilos que Bootstrap no cubre o que queremos sobreescribir */
-
 body {
-  background-color: #3af883; /* Verde oscuro de fondo */
-  background-image: url('/Fondo_Home.jpg'); /* Imagen de fondo */
+  background-color: aliceblue;
+  background-image: url('/Fondo_Home.jpg');
 }
 
 :root {
-  --bs-success: #1d6d3c; /* Verde principal para botones */
-  --bs-success-rgb: 29, 109, 60;
+  --bs-success: #C16200;
+  --bs-success-rgb: 19, 49, 92;
 }
 #root {
   max-width: 100%;
@@ -18,34 +16,46 @@ body {
 
 .navbar-brand {
   background-color: aliceblue;
-  border-radius: 30px;
-  border: 5px solid seagreen;
-  width: 195px;
-  height: auto;
+  border-radius: 50px;
+  border: 5px solid #CDCDCD;
+  width: auto;
+  height: 60px;
 }
 
 .navbar {
-  border-bottom: aliceblue solid 2px;
+  border-bottom: #CDCDCD solid 2px;
+  background-color: #13315C;
+  opacity: 98%;
+}
+
+.card {
+  border: #CDCDCD solid 2px;
 }
 
 .btn-group .btn{
   --bs-btn-font-weight: 600;
-  --bs-btn-color: aliceblue;
-  --bs-btn-bg: #1d6d3c;
-  --bs-btn-border-color: #1d6d3c;
-  --bs-btn-hover-color: #1d6d3c;
-  --bs-btn-hover-border-color: #1E796A
+  --bs-btn-color: #CDCDCD;
+  --bs-btn-bg: #CDCDCD;
+  --bs-btn-border-color: #CDCDCD;
+  --bs-btn-hover-color: #CDCDCD;
+  --bs-btn-hover-border-color: #CDCDCD;
 }
 
-.text-success {
-  color: #1d6d3c;
-}
 
 .btn-success {
   --bs-btn-bg: var(--bs-success);
   --bs-btn-border-color: var(--bs-success);
-  --bs-btn-hover-bg: #1d6d3c;
-  --bs-btn-hover-border-color: #1d6d3c;
+  --bs-btn-hover-bg: #095D59;
+  --bs-btn-hover-border-color: #095D59;
+  --bs-btn-active-bg:  #C16200;
+  --bs-btn-active-border-color: var(--bs-btn-active-bg);
+}
+
+.btn-danger {
+  --bs-btn-bg: #881600;
+  --bs-btn-border-color: #CDCDCD;
+  --bs-btn-hover-bg: #C16200;
+  --bs-btn-hover-border-color: #C16200;
 }
 
 .navbar-brand img {
