@@ -1,20 +1,26 @@
 // LoginPage.jsx (Código modificado y corregido)
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../components/AuthContext'; // <--- Ajusta la ruta si es necesario
+import { useAuth } from '../components/AuthContext'; // ✅ Usar el hook personalizado es mejor práctica
 import '../assets/cssViejos/loginStyle.css';
 
 const LoginPage = () => {
     // 1. Obtener funciones del Contexto y Hooks
-    // NOTA: Es mejor usar el hook personalizado useAuth() en lugar de useContext(AuthContext)
-    const { login } = useContext(AuthContext); 
+    const { login, user } = useAuth(); 
     const navigate = useNavigate();
 
     // 2. Estado para los campos del formulario
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+
+    // ✅ useEffect para redirigir DESPUÉS de que el estado del usuario se actualice
+    useEffect(() => {
+        if (user) {
+            navigate('/perfil'); // O a la página que prefieras
+        }
+    }, [user, navigate]);
 
     // 3. Manejador del envío del formulario
     const handleSubmit = (e) => {
@@ -25,11 +31,7 @@ const LoginPage = () => {
         const result = login(email, password);
 
         if (result.success) {
-            // Éxito: Redirigir a la página principal o de perfil
-            navigate("/perfil"); 
-            // Opcional: limpiar los campos
-            setEmail('');
-            setPassword('');
+            // La redirección ahora se maneja en el useEffect
         } else {
             // Fracaso: Mostrar mensaje de error del Contexto
             setError(result.message);

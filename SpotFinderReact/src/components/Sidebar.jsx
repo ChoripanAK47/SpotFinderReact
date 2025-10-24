@@ -1,6 +1,9 @@
 import React from 'react';
+import { useSpots } from './SpotContext'; // 1. Importamos el hook del contexto
 
 const Sidebar = () => {
+  const { searchTerm, setSearchTerm } = useSpots(); // 2. Obtenemos el estado y la función de búsqueda
+
   return (
     <div className="card shadow-sm sticky-top" style={{ top: '100px' }}>
       <div className="card-body text-center">
@@ -19,10 +22,12 @@ const Sidebar = () => {
             <input 
               type="text" 
               id="search"
-              placeholder="Ej: Plaza, Parque..."
+              placeholder="Ej: La Calera, Skatepark..."
               className="form-control"
+              value={searchTerm} // 3. Conectamos el valor al estado
+              onChange={(e) => setSearchTerm(e.target.value)} // 4. Actualizamos el estado al escribir
             />
-            <button className="btn btn-success">
+            <button className="btn btn-success" type="button">
               Buscar
             </button>
           </div>

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { spots } from '../data';
+import { useSpots } from '../components/SpotContext'; // Importamos el hook del contexto
 
 // Componente auxiliar para renderizar las estrellas de calificación
 const StarRating = ({ rating, label }) => {
@@ -23,12 +23,14 @@ const StarRating = ({ rating, label }) => {
 
 const SpotDetailPage = () => {
   const { id } = useParams();
+  const { spots, savedSpots, toggleSaveSpot } = useSpots();
   const spot = spots.find(s => s.spotId === id);
-  const [isSaved, setIsSaved] = useState(false);
+
+  const isSaved = savedSpots.includes(id);
 
   const handleSaveClick = () => {
-    setIsSaved(!isSaved);
-    // Aquí iría la lógica para guardar/quitar el spot en una lista global o localStorage
+    // Llamamos a la función del contexto para guardar/quitar el spot
+    toggleSaveSpot(id);
   };
 
   if (!spot) {

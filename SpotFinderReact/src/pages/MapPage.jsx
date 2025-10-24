@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import { spots } from '../data';
+import { useSpots } from '../components/SpotContext'; // Importamos el hook
 import { Link } from 'react-router-dom';
 
 const containerStyle = {
@@ -21,8 +21,8 @@ const mapOptions = {
   fullscreenControl: false,
   scrollwheel: true,
   rotateControl: true,
-  minZoom: 9,
-  maxZoom: 15,
+  minZoom: 5,
+  maxZoom: 50,
 };
 
 const StarRating = ({ rating, label }) => {
@@ -44,6 +44,8 @@ const StarRating = ({ rating, label }) => {
 };
 
 const MapPage = () => {
+  const { spots } = useSpots(); // Usamos el contexto para obtener los spots
+
   // 4. Carga del script de Google Maps con IDIOMA y REGIÓN
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',

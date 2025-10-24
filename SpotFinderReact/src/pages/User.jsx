@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
 import '../assets/cssViejos/perfil.css'; 
 import fotoPerfil from '../assets/images/fotoperfil.jpg';
 
 const User = () => {
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const { user, logout } = useAuth(); // ✅ Accede al usuario desde el contexto
 
@@ -12,6 +13,11 @@ const User = () => {
     logout(); // ✅ Limpia el usuario del contexto
     navigate('/login');
   };
+
+  // Este es un ejemplo simple. Para una implementación robusta,
+  // considera usar una librería de modales para React como `react-bootstrap` o `react-modal`.
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   return (
     <main className="fondo-ritual">
@@ -47,55 +53,50 @@ const User = () => {
           {/* Botón de cierre de sesión */}
           <button
             className="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#confirmarLogout"
+            onClick={handleShowModal}
           >
             Cerrar sesión
           </button>
         </section>
       </div>
 
-      {/* Modal de confirmación */}
-      <div
-        className="modal fade"
-        id="confirmarLogout"
-        tabIndex="-1"
-        aria-labelledby="logoutLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content shadow rounded">
-            <div className="modal-header">
-              <h5 className="modal-title" id="logoutLabel">¿Cerrar sesión?</h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Cerrar"
-              ></button>
-            </div>
-            <div className="modal-body">
-              ¿Estás seguro de que quieres cerrar sesión y volver a iniciar sesión?
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
-                className="btn btn-danger"
-                onClick={handleLogout}
-              >
-                Sí, cerrar sesión
-              </button>
+      {/* Modal de confirmación (controlado por estado) */}
+      {showModal && (
+        <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content shadow rounded">
+              <div className="modal-header">
+                <h5 className="modal-title">¿Cerrar sesión?</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleCloseModal}
+                  aria-label="Cerrar"
+                ></button>
+              </div>
+              <div className="modal-body">
+                ¿Estás seguro de que quieres cerrar sesión?
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleCloseModal}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={handleLogout}
+                >
+                  Sí, cerrar sesión
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </main>
   );
 };

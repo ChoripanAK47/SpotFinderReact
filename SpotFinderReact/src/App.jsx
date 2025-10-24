@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage';
 import Layout from './components/Layout';
 import MapPage from './pages/MapPage';
 import User from './pages/User';
+import NewSpotPage from './pages/NewSpotPage';
 import Nosotros from './pages/Nosotros';
 import CreateAccount from './pages/CreateAccount';
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/mapa" element={<Layout><MapPage /></Layout>} />
           <Route path="/spot/:id" element={<Layout><SpotDetailPage /></Layout>} />
           <Route path="/perfil" element={<Layout><ProfilePage /></Layout>} />
+          <Route path="/spots/nuevo" element={<Layout><NewSpotPage /></Layout>} />
 
           {/* Ruta de login sin sidebar */}
           <Route path="/nosotros" element={<Nosotros />} />

@@ -24,12 +24,6 @@ const SpotCard = ({ spot }) => {
           </div>
         </Link>
       </div>
-       <style>{`
-          .hover-scale:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-          }
-       `}</style>
     </div>
   );
 };
