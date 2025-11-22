@@ -5,7 +5,7 @@ const Sidebar = () => {
   const { searchTerm, setSearchTerm } = useSpots(); // 2. Obtenemos el estado y la función de búsqueda
 
   return (
-    <div className="card shadow-sm sticky-top" style={{ top: '100px' }}>
+    <div className="card shadow-sm">
       <div className="card-body text-center">
         <img 
           src="/GatoPrisma.gif"

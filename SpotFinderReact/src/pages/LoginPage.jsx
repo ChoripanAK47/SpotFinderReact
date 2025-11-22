@@ -44,9 +44,9 @@ const LoginPage = () => {
             <div className="envoltorio-login">
                 <section className="carta-dinamica text-center">
                     <h2 className="fw-bold mb-3">Iniciar sesión</h2>
-                    <hr style={{ borderTop: '2px solid black', width: '100px', margin: '0 auto 20px' }} />
+                    <hr style={{ borderTop: '2px solid black', width: '90%', margin: '0 auto 20px' }} />
                     <p className="text-muted mb-4">Accede con tu cuenta de SpotFinder.</p>
-                    <hr style={{ borderTop: '2px solid black', width: '100px', margin: '0 auto 20px' }} />
+                    <hr style={{ borderTop: '2px solid black', width: '90%', margin: '0 auto 20px' }} />
 
                     {/* Mostrar mensaje de error */}
                     {error && <div className="alert alert-danger small">{error}</div>} 

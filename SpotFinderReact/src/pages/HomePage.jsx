@@ -52,7 +52,7 @@ const HomePage = () => {
   }, [spots, activeFilter, searchTerm]);
 
   return (
-    <div className="card shadow-sm">
+    <div className="card shadow-sm-fluid">
       <div className="card-body p-1">
         <div className="pb-3 mb-4 border-bottom">
           <h1 className="card-title h4 fw-bold">Filtrar Spots</h1>

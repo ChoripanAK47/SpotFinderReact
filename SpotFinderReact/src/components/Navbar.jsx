@@ -52,8 +52,6 @@ const Navbar = () => {
             <li className="nav-item">
               <NavLink className="nav-link" to="/nosotros">Nosotros</NavLink>
             </li>
-          </ul>
-        </div>
 
         <div className="d-flex align-items-center">
           {user ? (
@@ -68,6 +66,8 @@ const Navbar = () => {
               </Link>
             </>
           )}
+        </div>
+          </ul>
         </div>
       </div>
     </nav>

@@ -25,9 +25,9 @@ function App() {
           <Route path="/mapa" element={<Layout><MapPage /></Layout>} />
           <Route path="/spot/:id" element={<Layout><SpotDetailPage /></Layout>} />
           <Route path="/perfil" element={<Layout><ProfilePage /></Layout>} />
-          <Route path="/spots/nuevo" element={<Layout><NewSpotPage /></Layout>} />
 
           {/* Ruta de login sin sidebar */}
+          <Route path="/spots/nuevo" element={<NewSpotPage />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/User" element={<User />} />
           <Route path="/login" element={<LoginPage />} />
