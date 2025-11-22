@@ -1,40 +1,41 @@
-// LoginPage.jsx (Código modificado y corregido)
-
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../components/AuthContext'; // ✅ Usar el hook personalizado es mejor práctica
-import '../assets/cssViejos/loginStyle.css';
+import { useAuth } from '../components/AuthContext'; 
+import '../assets/cssViejos/RegistroLogin.css';
 
 const LoginPage = () => {
-    // 1. Obtener funciones del Contexto y Hooks
     const { login, user } = useAuth(); 
     const navigate = useNavigate();
 
-    // 2. Estado para los campos del formulario
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false); // Estado de carga
 
-    // ✅ useEffect para redirigir DESPUÉS de que el estado del usuario se actualice
+    // Redirigir si el usuario ya está autenticado
     useEffect(() => {
         if (user) {
-            navigate('/perfil'); // O a la página que prefieras
+            navigate('/perfil');
         }
     }, [user, navigate]);
 
-    // 3. Manejador del envío del formulario
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        setIsLoading(true); // Activar carga
 
-        // Llamada a la función login del AuthContext
-        const result = login(email, password);
+        try {
+            // Llamada asíncrona al login
+            const result = await login(email, password);
 
-        if (result.success) {
-            // La redirección ahora se maneja en el useEffect
-        } else {
-            // Fracaso: Mostrar mensaje de error del Contexto
-            setError(result.message);
+            if (!result.success) {
+                setError(result.message);
+            }
+            // Si es exitoso, el useEffect redirigirá
+        } catch (err) {
+            setError("Ocurrió un error inesperado.");
+        } finally {
+            setIsLoading(false); // Desactivar carga
         }
     };
 
@@ -44,20 +45,14 @@ const LoginPage = () => {
                 <section className="carta-dinamica text-center">
                     <h2 className="fw-bold mb-3">Iniciar sesión</h2>
                     <hr style={{ borderTop: '2px solid black', width: '100px', margin: '0 auto 20px' }} />
-                    <p className="text-muted mb-4">Accede con tu cuenta o crea una nueva para comenzar.</p>
+                    <p className="text-muted mb-4">Accede con tu cuenta de SpotFinder.</p>
                     <hr style={{ borderTop: '2px solid black', width: '100px', margin: '0 auto 20px' }} />
 
-                    <button className="btn btn-outline-secondary w-100 mb-3 d-flex align-items-center justify-content-center" disabled>
-                        Continuar con Google
-                    </button>
-
                     {/* Mostrar mensaje de error */}
-                    {error && <p className="text-danger small text-center">{error}</p>} 
+                    {error && <div className="alert alert-danger small">{error}</div>} 
 
-                    {/* 4. Asignar el manejador de envío */}
                     <form onSubmit={handleSubmit}>
                         <div className="form-floating mb-3 text-start">
-                            {/* 5. Conectar el input de email al estado */}
                             <input 
                                 type="email" 
                                 className="form-control" 
@@ -70,7 +65,6 @@ const LoginPage = () => {
                             <label htmlFor="email">Correo electrónico</label>
                         </div>
                         <div className="form-floating mb-3 text-start">
-                            {/* 6. Conectar el input de password al estado */}
                             <input 
                                 type="password" 
                                 className="form-control" 
@@ -83,18 +77,20 @@ const LoginPage = () => {
                             <label htmlFor="password">Contraseña</label>
                         </div>
                         <div className="d-grid">
-                            {/* 7. Asegurar que el botón es tipo submit */}
-                            <button type="submit" className="btn btn-success btn-lg fw-semibold">Iniciar sesión</button>
+                            <button 
+                                type="submit" 
+                                className="btn btn-success btn-lg fw-semibold"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'Conectando...' : 'Iniciar sesión'}
+                            </button>
                         </div>
                     </form>
 
                     <hr className="my-4" />
 
-                    <p className="small">
-                        Al iniciar sesión, aceptas los <a href="#" className="text-success">Términos del Servicio</a> y la <a href="#" className="text-success">Política de Privacidad</a>.
-                    </p>
                     <p className="small text-muted">
-                        ¿No tienes una cuenta? <Link to="/CreateAccount" className="text-success fw-semibold">Regístrate ahora</Link>. {/* ✅ CORREGIDO a /CreateAccount */}
+                        ¿No tienes una cuenta? <Link to="/CreateAccount" className="text-success fw-semibold">Regístrate ahora</Link>.
                     </p>
                 </section>
             </div>

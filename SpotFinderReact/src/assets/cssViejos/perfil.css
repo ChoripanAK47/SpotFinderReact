@@ -3,34 +3,6 @@
   width: 100%;
   max-width: 800px;
 }
-.fondo-ritual {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  min-height: 100vh;
-  padding: 40px;
-  background-size: cover;
-  background-position: center;
-}
-
-
-/* Carta blanca con sombra verde intensa */
-.carta-dinamica {
-  width: 100%;
-  max-width: 700px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 4px 24px rgba(0, 255, 34, 0.5); /* sombra verde ritual */
-  padding: 40px;
-  transition: transform 0.3s, box-shadow 0.3s;
-  margin: 40px auto;
-}
-
-.carta-dinamica:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 32px rgba(224, 0, 0, 0.25); /* sombra roja al hover */
-}
 
 /* Imagen de perfil elevada y circular */
 .Foto-perfil {
@@ -43,12 +15,6 @@
   background-color: #eee;
 }
 
-/* Título */
-#nombreCompleto {
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #095D59;
-}
 
 /* Subtítulo */
 .text-muted {
@@ -69,10 +35,13 @@
   font-weight: bold;
   padding: 10px 20px;
   border-radius: 8px;
+  border: 2px solid #BA3F1D;
+  color: #BA3F1D;
   transition: background-color 0.3s, color 0.3s;
 }
 
 .btn-outline-danger:hover {
-  background-color: #881600;
+  background-color: #BA3F1D;
+  border: 2px solid #BA3F1D;
   color: #fcfbfb;
 }

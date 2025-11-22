@@ -5,53 +5,98 @@ export const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  // 1. Cargar Usuarios de localStorage al inicio
-  const [usuarios, setUsuarios] = useState(() => {
-    const storedUsers = localStorage.getItem('usuariosApp');
-    return storedUsers ? JSON.parse(storedUsers) : [];
-  });
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
 
-  // 2. Estado para el usuario logueado
-  const [user, setUser] = useState(null); // ✅ Renombrado para consistencia
+  // URL base del backend (Asegúrate de que tu backend esté corriendo en este puerto)
+  const API_URL = "http://localhost:8080/api/v1/usuarios";
 
-  // 3. Guardar Usuarios en localStorage cada vez que la lista cambia
-  useEffect(() => {
-    localStorage.setItem('usuariosApp', JSON.stringify(usuarios));
-  }, [usuarios]);
+  // 1. FUNCIÓN DE REGISTRO (Conectada al Backend)
+  const createAccount = async (userData) => {
+    try {
+      const payload = {
+        nombre: userData.nombre.trim(),
+        apellido: userData.apellido.trim(),
+        email: userData.email,
+        contrasena: userData.password,
+        genero: userData.genero
+      };
 
-  // 4. FUNCIÓN DE REGISTRO
-  const createAccount = (newUserData) => {
-    const userExists = usuarios.some(u => u.email === newUserData.email);
-    if (userExists) {
-      return { success: false, message: "El email ya está registrado." };
+      const response = await fetch(`${API_URL}/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error del servidor:", errorText);
+        return { success: false, message: errorText || "Error al crear la cuenta." };
+      }
+
+      return { success: true, message: "Cuenta creada con éxito." };
+    } catch (error) {
+      console.error("Error en la función createAccount:", error);
+      return { success: false, message: "Error de conexión con el servidor." };
     }
-
-    const newUser = { id: Date.now(), ...newUserData };
-    setUsuarios(prev => [...prev, newUser]);
-    return { success: true, message: "Cuenta creada con éxito." };
   };
 
-  // 5. FUNCIÓN DE LOGIN
-  const login = (email, password) => {
-    const foundUser = usuarios.find(u => u.email === email && u.password === password);
-    if (foundUser) {
-      setUser(foundUser);
-      return { success: true, message: "Inicio de sesión exitoso.", user: foundUser };
+  // 2. FUNCIÓN DE LOGIN (Conectada al Backend)
+  const login = async (email, password) => {
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json(); // Esperamos { "token": "..." }
+        
+        if (data.token) {
+          // Guardar token
+          localStorage.setItem('token', data.token);
+          setToken(data.token);
+
+          // Como el endpoint de login solo devuelve el token, simulamos los datos básicos
+          // del usuario para que la UI no se rompa. 
+          // Crear un endpoint /me para traer los datos completos.
+          setUser({ 
+            email: email, 
+            nombre: "", 
+            apellido: "", 
+            genero: "" 
+          });
+
+          return { success: true, message: "Inicio de sesión exitoso." };
+        }
+      }
+      
+      return { success: false, message: "Credenciales inválidas." };
+      
+    } catch (error) {
+      console.error("Error en login:", error);
+      return { success: false, message: "Error de conexión con el servidor." };
     }
-    return { success: false, message: "Credenciales inválidas." };
   };
 
-  // 6. FUNCIÓN DE LOGOUT
+  // 3. FUNCIÓN DE LOGOUT
   const logout = () => {
+    localStorage.removeItem('token');
+    setToken(null);
     setUser(null);
   };
 
-  // 7. Valor del contexto
   const value = {
-    user,           // ✅ Renombrado
+    user,
+    token,
     createAccount,
     login,
-    logout          // ✅ Agregado
+    logout
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

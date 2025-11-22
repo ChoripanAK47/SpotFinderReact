@@ -1,11 +1,11 @@
 body {
-  background-color: aliceblue;
-  background-image: url('/Fondo_Home.jpg');
+  background-color: white;
+  /*!background-image: url('/Fondo_Home.jpg');*/
 }
 
 :root {
-  --bs-success: #C16200;
-  --bs-success-rgb: 19, 49, 92;
+  --bs-success: #095D59;
+  --bs-success-rgb: 14, 71, 73;
 }
 #root {
   max-width: 100%;
@@ -15,7 +15,7 @@ body {
 }
 
 .navbar-brand {
-  background-color: aliceblue;
+  background-color: #CDCDCD;
   border-radius: 50px;
   border: 5px solid #CDCDCD;
   width: auto;
@@ -24,38 +24,40 @@ body {
 
 .navbar {
   border-bottom: #CDCDCD solid 2px;
-  background-color: #13315C;
-  opacity: 98%;
+  background-color: #0E4749;
+  opacity: 100%;
 }
 
 .card {
-  border: #CDCDCD solid 2px;
+  border: #C4BBB8 solid 2px;
 }
 
 .btn-group .btn{
   --bs-btn-font-weight: 600;
-  --bs-btn-color: #CDCDCD;
-  --bs-btn-bg: #CDCDCD;
-  --bs-btn-border-color: #CDCDCD;
-  --bs-btn-hover-color: #CDCDCD;
-  --bs-btn-hover-border-color: #CDCDCD;
+  --bs-btn-color: #C4BBB8;
+  --bs-btn-bg: #C4BBB8;
+  --bs-btn-border-color: #C4BBB8;
+  --bs-btn-hover-color: #C4BBB8;
+  --bs-btn-hover-border-color: #C4BBB8;
 }
 
 
 .btn-success {
+  --bs-btn-color: white;
   --bs-btn-bg: var(--bs-success);
-  --bs-btn-border-color: var(--bs-success);
-  --bs-btn-hover-bg: #095D59;
-  --bs-btn-hover-border-color: #095D59;
-  --bs-btn-active-bg:  #C16200;
+  --bs-btn-border-color: #095D59;
+  --bs-btn-hover-bg: #00A9A5;
+  --bs-btn-hover-border-color: #00A9A5;
+  --bs-btn-hover-color: Black;
+  --bs-btn-active-bg:  #C4BBB8;
   --bs-btn-active-border-color: var(--bs-btn-active-bg);
 }
 
 .btn-danger {
-  --bs-btn-bg: #881600;
-  --bs-btn-border-color: #CDCDCD;
-  --bs-btn-hover-bg: #C16200;
-  --bs-btn-hover-border-color: #C16200;
+  --bs-btn-bg: #BA3F1D;
+  --bs-btn-border-color: #C4BBB8;
+  --bs-btn-hover-bg: #BA3F1D;
+  --bs-btn-hover-border-color: #BA3F1D;
 }
 
 .navbar-brand img {

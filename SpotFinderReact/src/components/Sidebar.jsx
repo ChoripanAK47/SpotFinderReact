@@ -10,7 +10,7 @@ const Sidebar = () => {
         <img 
           src="/GatoPrisma.gif"
           alt="Avatar de usuario" 
-          className="mx-auto"
+          className="mx-auto img-fluid" // Clase img-fluid para hacerlo responsivo
         />
         <h5 className="card-title fw-bold">Bienvenido a SpotFinder</h5>
         <p className="card-text text-muted small mb-4">

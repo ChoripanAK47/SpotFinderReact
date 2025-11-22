@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 const containerStyle = {
   width: '100%',
   height: 'calc(94vh - 200px)', // Altura del mapa
-  borderRadius: '0.375rem'
+  borderRadius: '0.375rem',
+  border: '2px solid #0E4749', // Borde de color azul
 };
 
 const center = {

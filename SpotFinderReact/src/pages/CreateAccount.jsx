@@ -1,7 +1,7 @@
 import React, { useState } from 'react'; 
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext';
-import '../assets/cssViejos/Registro.css';
+import '../assets/cssViejos/RegistroLogin.css';
 
 const CreateAccountPage = () => {
   const { createAccount } = useAuth();
@@ -12,9 +12,10 @@ const CreateAccountPage = () => {
     email: '',
     password: '',
     passwordConfirm: '',
-    genero: 'Tu Género:',
+    genero: '',
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -24,27 +25,43 @@ const CreateAccountPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError('');
+    setIsLoading(true);
 
-    if (formData.password !== formData.passwordConfirm) {
-      setError("Las contraseñas no coinciden.");
+    // Validar que el género sea válido
+    if (formData.genero === 'Tu Género:') {
+      setError('Por favor, selecciona un género válido.');
+      setIsLoading(false);
       return;
     }
 
-    const result = createAccount({
-      nombreCompleto: formData.nombreCompleto,
-      email: formData.email, 
-      password: formData.password,
-      genero: formData.genero,
-    });
+    if (formData.password !== formData.passwordConfirm) {
+      setError("Las contraseñas no coinciden.");
+      setIsLoading(false);
+      return;
+    }
 
-    if (result.success) {
-      alert("¡Registro exitoso! Redirigiendo a iniciar sesión.");
-      navigate("/login"); 
-    } else {
-      setError(result.message);
+    try {
+      const result = await createAccount({
+        nombre: formData.nombre,
+        apellido: formData.apellido,
+        email: formData.email,
+        password: formData.password,
+        genero: formData.genero
+      });
+
+      if (result.success) {
+        alert("¡Registro exitoso! Redirigiendo a iniciar sesión.");
+        navigate("/login"); 
+      } else {
+        setError(result.message);
+      }
+    } catch (err) {
+      setError("Error al intentar registrarse.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -52,23 +69,37 @@ const CreateAccountPage = () => {
     <div className="fondo-blanco-dinamico">
       <main className="d-flex justify-content-center align-items-start pt-5">
         <section className="container my-2 w-50 p-3 fondo-section carta-dinamica">
+          <h3 className="text-center mb-4 fw-bold">Crear Cuenta</h3>
           <form className="row g-3" onSubmit={handleSubmit}> 
-            {error && <p className="text-danger text-center col-12">{error}</p>}
+            {error && <div className="alert alert-danger col-12 text-center">{error}</div>}
 
-            <div className="col-md-4">
-              <label htmlFor="nombreCompleto" className="form-label">Nombre Completo:</label>
+            <div className="col-md-12">
+              <label htmlFor="nombre" className="form-label">Nombre:</label>
               <input 
                 type="text" 
                 className="form-control" 
-                id="nombreCompleto" 
-                value={formData.nombreCompleto}
+                id="nombre" 
+                value={formData.nombre}
                 onChange={handleChange}
                 required 
-                placeholder="Ingresa tu nombre" 
+                placeholder="Ej: Juan" 
               />
             </div>
 
-            <div className="col-md-6">
+            <div className="col-md-12">
+              <label htmlFor="apellido" className="form-label">Apellido:</label>
+              <input 
+                type="text" 
+                className="form-control" 
+                id="apellido" 
+                value={formData.apellido}
+                onChange={handleChange}
+                required 
+                placeholder="Ej: Pérez" 
+              />
+            </div>
+
+            <div className="col-md-12">
               <label htmlFor="email" className="form-label">Email</label>
               <input 
                 type="email" 
@@ -77,8 +108,25 @@ const CreateAccountPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required 
-                placeholder="Ingresa tu email" 
+                placeholder="tu@email.com" 
               />
+            </div>
+
+            <div className="col-12">
+              <label htmlFor="genero" className="form-label">Género:</label>
+              <select
+                className="form-select form-select"
+                id="genero"
+                value={formData.genero}
+                onChange={handleChange}
+                aria-label="Large select example"
+                required
+              >
+                <option value="" disabled>Selecciona tu género</option>
+                <option value="Hombre">Hombre</option>
+                <option value="Mujer">Mujer</option>
+                <option value="Otro">Otro</option>
+              </select>
             </div>
 
             <div className="col-md-6">
@@ -90,10 +138,10 @@ const CreateAccountPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required 
-                placeholder="Ingresa tu contraseña" 
+                placeholder="Mínimo 6 caracteres" 
               />
             </div>
-
+            
             <div className="col-md-6">
               <label htmlFor="passwordConfirm" className="form-label">Confirma contraseña:</label>
               <input 
@@ -103,33 +151,20 @@ const CreateAccountPage = () => {
                 value={formData.passwordConfirm}
                 onChange={handleChange}
                 required 
-                placeholder="Confirma tu contraseña" 
+                placeholder="Repite tu contraseña" 
               />
             </div>
 
-            <div className="col-12">
-              <label htmlFor="genero" className="form-label">Género:</label>
-              <select 
-                className="form-select form-select-lg mb-3" 
-                id="genero"
-                value={formData.genero}
-                onChange={handleChange} 
-                aria-label="Large select example"
-              >
-                <option disabled>Tu Género:</option>
-                <option value="Hombre">Hombre</option>
-                <option value="Mujer">Mujer</option>
-                <option value="Otro">Otro</option>
-              </select>
-            </div>
 
             <div className="col-12">
-              <div className="IniciarSesion text-center mb-3">
-                ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
+              <div className="text-center mb-3">
+                ¿Ya tienes una cuenta? <Link to="/login" className="text-success fw-bold">Inicia sesión</Link>
               </div>
-              <button type="submit" className="button">
-                Registrarse
-              </button>
+              <div className="d-grid">
+                <button type="submit" className="btn btn-success btn-lg" disabled={isLoading}>
+                  {isLoading ? 'Registrando...' : 'Registrarse'}
+                </button>
+              </div>
             </div>
           </form>
         </section>
