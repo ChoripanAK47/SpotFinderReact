@@ -9,7 +9,7 @@ const Bienvenida = () => {
     <div className="bienvenida">
       <div className="bienvenida-card">
         <h1 className="bienvenida-title">¡Bienvenido a SpotFinder!</h1>
-        <p className="bienvenida-sub">Descubre y comparte tus lugares favoritos.<br /> En SpotFinder encontrarás tu lugar favorito tu zona.</p>
+        <p className="bienvenida-sub">Descubre y comparte tus lugares favoritos.<br /> En SpotFinder encontrarás tu lugar favorito cercano a tu zona.</p>
         <div className="card-body text-center mb-5">
         <img 
           src="/GatoPrisma.gif"

@@ -10,7 +10,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true); // Para saber si estamos verificando sesión
 
   // URL base del backend (Asegúrate de que tu backend esté corriendo en este puerto)
-  const API_URL = "http://localhost:8080/api/v1/usuarios";
+  // const API_URL = "http://localhost:8080/api/v1/usuarios";
+  const API_URL = "http://http://54.91.231.177/api/v1/usuarios"; 
 
   const fetchUserProfile = async (tokenToUse) => {
     try {
