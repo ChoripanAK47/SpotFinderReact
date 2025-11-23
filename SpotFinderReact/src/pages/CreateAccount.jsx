@@ -67,8 +67,8 @@ const CreateAccountPage = () => {
 
   return (
     <div className="fondo-blanco-dinamico">
-      <main className="d-flex justify-content-center align-items-start pt-5">
-        <section className="container my-2 w-50 p-3 fondo-section carta-dinamica">
+      <main className="d-flex justify-content-center align-items-start pt-2">
+        <section className="container my-2 p-3 fondo-section carta-dinamicaRegistro">
           <h3 className="text-center mb-4 fw-bold">Crear Cuenta</h3>
           <form className="row g-3" onSubmit={handleSubmit}> 
             {error && <div className="alert alert-danger col-12 text-center">{error}</div>}

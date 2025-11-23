@@ -1,9 +1,9 @@
 const Nosotros = () => {
   return (
-    <div className="card shadow-sm m-5" style={{opacity : 0.95
+    <div className="card shadow-sm m-3" style={{opacity : 0.95
 
     }}>
-      <div className="card-body p-4 mx-auto text-center">
+      <div className="card-body p-2 mx-auto text-center">
         <h1 className="card-title h4 fw-bold">Nosotros</h1>
         <p>
           SpotFinder es una aplicación diseñada para ayudar a los usuarios a

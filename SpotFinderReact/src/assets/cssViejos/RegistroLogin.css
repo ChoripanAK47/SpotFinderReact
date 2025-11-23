@@ -1,6 +1,6 @@
 .carta-dinamica {
-  width: 75vh;
-  max-width: 75vh;
+  width: 37vh;
+  max-width: 70vh;
   background: white;
   border-radius: 16px;
   box-shadow: 0 4px 24px rgb(14, 71, 73);
@@ -11,6 +11,23 @@
 }
 
 .carta-dinamica:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 32px rgb(0, 169, 165);
+}
+
+.carta-dinamicaRegistro {
+  width: 70vh;
+  max-width: 70vh;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgb(14, 71, 73);
+  padding: 40px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin: 10px !important;
+  border: 2px solid #CDCDCD;
+}
+
+.carta-dinamicaRegistro:hover {
   transform: scale(1.02);
   box-shadow: 0 8px 32px rgb(0, 169, 165);
 }
