@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
   // URL base del backend (Asegúrate de que tu backend esté corriendo en este puerto)
   // const API_URL = "http://localhost:8080/api/v1/usuarios";
-  const API_URL = "http://http://54.91.231.177/api/v1/usuarios"; 
+  const API_URL = "http://18.212.90.206:8080/api/v1/usuarios";
 
   const fetchUserProfile = async (tokenToUse) => {
     try {
