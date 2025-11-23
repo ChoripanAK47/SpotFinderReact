@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark sticky-top">
       <div className="container-fluid">
-        <Link className="navbar-brand d-flex align-items-center" to="/">
+        <Link className="navbar-brand d-flex align-items-center" to="/home">
           <div className="">
             <img src="/Logo_SpotFinder.png" alt="Logo de SpotFinder" style={{ maxHeight: '40px' }} />
           </div>
@@ -38,7 +38,7 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <NavLink className="nav-link" to="/">Ver Spots</NavLink>
+              <NavLink className="nav-link" to="/home">Ver Spots</NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/mapa">Mapa de Spots</NavLink>

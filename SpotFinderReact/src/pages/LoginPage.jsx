@@ -41,7 +41,7 @@ const LoginPage = () => {
 
     return (
         <main className="fondo-ritual">
-            <div className="envoltorio-login-fluid">
+            <div className="envoltorio-login">
                 <section className="carta-dinamica text-center">
                     <h2 className="fw-bold mb-3">Iniciar sesión</h2>
                     <hr style={{ borderTop: '2px solid black', width: '90%', margin: '0 auto 20px' }} />

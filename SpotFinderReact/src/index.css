@@ -1,6 +1,20 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* opcional para garantizar que el body siempre cubra la ventana */
+body {
+  min-height: 100vh;
+  /* background ya lo tienes definido más abajo; si lo quieres aquí, mantenlo */
+  /* background: linear-gradient(135deg, #095D59 0%, #13315C 100%); */
+}
+
 body {
   background-color: white;
   /*!background-image: url('/Fondo_Home.jpg');*/
+  background: linear-gradient(135deg, #095D59 0%, #13315C 100%)
 }
 
 :root {
@@ -74,4 +88,10 @@ body {
 .sidebar-avatar {
   width: 96px;
   height: 96px;
+}
+
+/* Evita el scroll cuando la app añade .no-scroll al body */
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh; /* evita scroll por altura */
 }
