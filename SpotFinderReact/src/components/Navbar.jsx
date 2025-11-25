@@ -57,6 +57,11 @@ const Navbar = () => {
           {user ? (
             <>
               <Link to="/user" className="nav-link text-white me-3">Mi Cuenta</Link>
+
+              {user.rol === 'ADMIN' && (
+                <Link to="/administracion" className="btn btn-primary btn-sm me-3">Administración</Link>
+              )}
+
               <button onClick={handleLogout} className="btn btn-danger btn-sm">Cerrar Sesión</button>
             </>
           ) : (

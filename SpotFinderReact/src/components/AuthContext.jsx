@@ -10,32 +10,35 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true); // Para saber si estamos verificando sesión
 
   // URL base del backend (Asegúrate de que tu backend esté corriendo en este puerto)
-  // const API_URL = "http://localhost:8080/api/v1/usuarios";
-  const API_URL = "http://18.212.90.206:8080/api/v1/usuarios";
+  //const API_URL = "http://localhost:8080/api/v1/usuarios";
+  const API_URL = "http://3.220.100.170:8080/api/v1/usuarios";
 
   const fetchUserProfile = async (tokenToUse) => {
     try {
       const response = await fetch(`${API_URL}/me`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${tokenToUse}`, // Enviamos el token
+          'Authorization': `Bearer ${tokenToUse}`,
           'Content-Type': 'application/json',
         },
       });
 
       if (response.ok) {
         const userData = await response.json();
-        // userData debe coincidir con el DTO UsuarioProfile del backend:
-        // { id, nombre, apellido, email, rol, genero }
-        setUser(userData); 
+        // El backend devuelve { id, nombre, apellido, email, rol, genero }
+        // Guardamos tal cual (usar .rol en el frontend) y añadimos role por si hay código que lo usa
+        setUser({ ...userData, rol: userData.rol });
+        return { success: true, data: userData };
       } else {
-        // Si el token expiró o no es válido
-        console.warn("Token inválido o expirado.");
+        // si 401/403 o 404 -> cerrar sesión
+        console.warn("fetchUserProfile response:", response.status);
         logout();
+        return { success: false, status: response.status };
       }
     } catch (error) {
       console.error("Error al obtener perfil:", error);
       logout();
+      return { success: false, message: 'error de conexión' };
     } finally {
       setLoading(false);
     }
@@ -125,13 +128,103 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  // --- FUNCIONES ADMIN ---
+  const fetchAllUsers = async () => {
+    const tokenToUse = token || localStorage.getItem('token');
+    if (!tokenToUse) return { success: false, message: 'No autorizado' };
+
+    try {
+      const res = await fetch(`${API_URL}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${tokenToUse}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        return { success: true, data };
+      } else if (res.status === 404) {
+        // tu controller devuelve 404 si no hay usuarios; tratamos como lista vacía
+        return { success: true, data: [] };
+      } else {
+        const text = await res.text();
+        return { success: false, message: text || `Error ${res.status}` };
+      }
+    } catch (error) {
+      console.error('fetchAllUsers error', error);
+      return { success: false, message: 'Error de conexión' };
+    }
+  };
+
+  const deleteUserById = async (id) => {
+    const tokenToUse = token || localStorage.getItem('token');
+    if (!tokenToUse) return { success: false, message: 'No autorizado' };
+
+    try {
+      // Endpoint: DELETE /api/v1/usuarios/delete?id={id}
+      const res = await fetch(`${API_URL}/delete?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${tokenToUse}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (res.ok || res.status === 204) {
+        return { success: true };
+      } else {
+        const text = await res.text();
+        return { success: false, message: text || `Error ${res.status}` };
+      }
+    } catch (error) {
+      console.error('deleteUserById error', error);
+      return { success: false, message: 'Error de conexión' };
+    }
+  };
+
+  const updateUserById = async (id, payload) => {
+    const tokenToUse = token || localStorage.getItem('token');
+    if (!tokenToUse) return { success: false, message: 'No autorizado' };
+
+    try {
+      // Controller espera PUT /api/v1/usuarios/update con el objeto Usuario en body
+      // Aseguramos incluir el id en el body si no viene
+      const bodyObj = { ...(payload || {}), id };
+
+      const res = await fetch(`${API_URL}/update`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${tokenToUse}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyObj)
+      });
+
+      if (res.ok) {
+        const updated = await res.json();
+        return { success: true, data: updated };
+      } else {
+        const text = await res.text();
+        return { success: false, message: text || `Error ${res.status}` };
+      }
+    } catch (error) {
+      console.error('updateUserById error', error);
+      return { success: false, message: 'Error de conexión' };
+    }
+  };
+
   const value = {
     user,
     token,
     loading,
     createAccount,
     login,
-    logout
+    logout,
+    fetchAllUsers,     // expuesto
+    deleteUserById,    // expuesto
+    updateUserById     // expuesto
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

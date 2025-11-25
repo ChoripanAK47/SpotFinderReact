@@ -26,6 +26,7 @@ const User = () => {
           <p className="text-muted">Apellido: {user?.apellido || 'No disponible'}</p>
           <p className="text-muted">Género: {user?.genero || 'No disponible'}</p>
           <p className="text-muted">Correo: {user?.email || 'No disponible'}</p>
+          <p className="text-muted">Rol: {user?.rol || 'No disponible'}</p>
           <span className="badge bg-success mb-3">Activo</span>
           <hr style={{ borderTop: '2px solid black', width: '90%', margin: '0 auto 20px' }} />
           <button className="btn btn-outline-danger" onClick={handleLogout}>

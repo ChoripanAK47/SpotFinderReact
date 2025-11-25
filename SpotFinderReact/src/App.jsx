@@ -14,6 +14,7 @@ import NewSpotPage from './pages/NewSpotPage';
 import Nosotros from './pages/Nosotros';
 import CreateAccount from './pages/CreateAccount';
 import Bienvenida from './pages/Bienvenida';
+import Administracion from './pages/Administracion';
 
 function App() {
   const location = useLocation();
@@ -52,6 +53,8 @@ function App() {
             <Route path="/mapa" element={<Layout><MapPage /></Layout>} />
             <Route path="/spot/:id" element={<Layout><SpotDetailPage /></Layout>} />
             <Route path="/perfil" element={<Layout><ProfilePage /></Layout>} />
+
+            <Route path="/administracion" element={<Administracion />} />
 
             {/* Rutas sin sidebar */}
             <Route path="/spots/nuevo" element={<NewSpotPage />} />
