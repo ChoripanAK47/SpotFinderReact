@@ -69,9 +69,18 @@ body {
 
 .btn-danger {
   --bs-btn-bg: #BA3F1D;
+  --bs-btn-border-color: #ffffff;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-danger:hover {
+  --bs-btn-bg: #BA3F1D;
   --bs-btn-border-color: #C4BBB8;
   --bs-btn-hover-bg: #BA3F1D;
-  --bs-btn-hover-border-color: #BA3F1D;
+  border: white solid 2px;
+  
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  font-weight: 600;
 }
 
 .navbar-brand img {
@@ -119,4 +128,73 @@ body.no-scroll {
     max-height: none;
     overflow: visible;
   }
+}
+
+.btn-admin {
+  background: linear-gradient(135deg, #095D59 0%, #13315C 100%);
+  color: white;
+  border: none;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: white solid 1px;
+}
+
+.btn-admin:hover {
+  background: linear-gradient(135deg, #0B6E6A 0%, #1A3E6E 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border: white solid 2px;
+  color: white;
+}
+
+.btn-admin:active {
+  transform: translateY(2px);
+}
+
+.btn-guardar{
+  background: linear-gradient(135deg, #095D59 0%, #13315C 100%);
+  color: white;
+  border: white solid 1px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: white solid 1px;
+}
+
+.btn-guardar:hover{
+  background: linear-gradient(135deg, #095D59 0%, #13315C 100%);
+  border: white solid 1px;
+  color: white;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-eliminar{
+  background: #BA3F1D;
+  color: white;
+  border: white solid 1px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: white solid 1px;
+}
+
+.btn-eliminar:hover{
+  background: #BA3F1D;
+  color: white;
+  border: white solid 1px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: white solid 1px;
+}
+
+.card-header-administracion {
+  background: linear-gradient(135deg, #095D59 0%, #13315C 100%);
+  color: white;
+  border-bottom: 2px solid #0B6E6A; /* Mantener el borde inferior */
+  border-radius: 12px 12px 0 0; /* Mantener la forma redondeada */
+  padding: 1rem;
+  font-weight: bold;
+}
+
+.table-admin{
+  border: 2px solid #C4BBB8;
+
 }

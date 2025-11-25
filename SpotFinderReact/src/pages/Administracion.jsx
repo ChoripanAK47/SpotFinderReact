@@ -1,130 +1,180 @@
 import React, { useEffect, useState } from 'react';
-import '../index.css';
 import { useAuth } from '../components/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Administracion = () => {
   const { user, fetchAllUsers, deleteUserById, updateUserById, loading: authLoading } = useAuth();
   const [usuarios, setUsuarios] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [editing, setEditing] = useState({}); // { [id]: { rol: 'USER' } }
+  const [loadingData, setLoadingData] = useState(false);
+  const [editing, setEditing] = useState({}); // Estado local para cambios no guardados
+  const navigate = useNavigate();
 
-  const loadUsers = async () => {
-    setLoading(true);
-    const res = await fetchAllUsers();
-    if (res.success) setUsuarios(res.data || []);
-    else {
-      setUsuarios([]);
-      alert('Error al cargar usuarios: ' + (res.message || 'unknown'));
-    }
-    setLoading(false);
-  };
-
+  // 1. Cargar usuarios al iniciar
   useEffect(() => {
-    // esperar a que el contexto termine de verificar la sesión
-    if (!authLoading && (user?.rol === 'ADMIN' || user?.role === 'ADMIN')) loadUsers();
-  }, [user, authLoading]);
+    if (!authLoading) {
+      if (user?.rol !== 'ADMIN') {
+        navigate('/home'); // Redirigir si no es admin
+      } else {
+        cargarUsuarios();
+      }
+    }
+  }, [user, authLoading, navigate]);
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Eliminar usuario? Esta acción es irreversible.')) return;
-    const res = await deleteUserById(id);
-    if (res.success) {
-      setUsuarios(prev => prev.filter(u => u.id !== id));
+  const cargarUsuarios = async () => {
+    setLoadingData(true);
+    const result = await fetchAllUsers();
+    if (result.success) {
+      setUsuarios(result.data);
     } else {
-      alert('Error al eliminar: ' + (res.message || 'unknown'));
+      alert("Error cargando usuarios: " + result.message);
+    }
+    setLoadingData(false);
+  };
+
+  // 2. Manejar borrado
+  const handleDelete = async (id) => {
+    if (window.confirm('¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.')) {
+      const result = await deleteUserById(id);
+      if (result.success) {
+        // Actualizar UI filtrando el eliminado
+        setUsuarios(prev => prev.filter(u => u.id !== id));
+        alert('Usuario eliminado correctamente');
+      } else {
+        alert('Error al eliminar: ' + result.message);
+      }
     }
   };
 
-  const handleChangeRol = (id, value) => {
-    setEditing(prev => ({ ...prev, [id]: { ...(prev[id] || {}), rol: value } }));
+  // 3. Manejar cambio en el select (estado local)
+  const handleRolChange = (id, nuevoRol) => {
+    setEditing(prev => ({
+      ...prev,
+      [id]: { ...prev[id], rol: nuevoRol }
+    }));
   };
 
+  // 4. Guardar cambios (Actualizar Rol)
   const handleSave = async (id) => {
-    const patch = editing[id];
-    if (!patch) return;
-    // Buscar el usuario actual y mergear para evitar perder campos en el PUT
+    const cambios = editing[id];
+    if (!cambios) return;
+
+    // Buscamos el usuario original para no perder datos (nombre, email, etc)
     const usuarioActual = usuarios.find(u => u.id === id);
     if (!usuarioActual) return alert('Usuario no encontrado en lista local');
 
-    const body = { ...usuarioActual, ...patch }; // id incluido en usuarioActual
-    const res = await updateUserById(id, body);
-    if (res.success) {
-      setUsuarios(prev => prev.map(u => (u.id === id ? { ...u, ...res.data } : u)));
-      setEditing(prev => {
-        const copy = { ...prev };
-        delete copy[id];
-        return copy;
-      });
+    // CORRECCIÓN: Excluir la contraseña del objeto que se envía
+    const { contrasena, ...usuarioSinPass } = usuarioActual; 
+    
+    const body = { ...usuarioSinPass, ...cambios }; 
+    
+    const result = await updateUserById(id, body);
+    
+    if (result.success) {
+      // Actualizamos la lista principal con la respuesta del servidor
+      setUsuarios(prev => prev.map(u => (u.id === id ? result.data : u)));
+      
+      // Limpiamos el estado de edición para este ID
+      const newEditing = { ...editing };
+      delete newEditing[id];
+      setEditing(newEditing);
+      
+      alert('Rol actualizado correctamente');
     } else {
-      alert('Error al actualizar: ' + (res.message || 'unknown'));
+      alert('Error al actualizar: ' + result.message);
     }
   };
 
-  if (!(user?.rol === 'ADMIN' || user?.role === 'ADMIN')) {
-    return (
-      <main className="ventana-administracion">
-        <div className="card p-4 m-4">
-          <div className="card-body">
-            <h4>Acceso denegado</h4>
-            <p>Se requiere rol ADMIN para acceder a esta sección.</p>
-          </div>
-        </div>
-      </main>
-    );
-  }
+  if (authLoading) return <div className="p-5 text-center">Verificando permisos...</div>;
 
   return (
-    <main className="ventana-administracion">
-      <div className="card shadow-sm p-4 m-4">
-        <div className="card-body p-4">
-          <h1 className="card-title h4 fw-bold">Ventana de Administración</h1>
-          <p>Funciones: listar, eliminar y actualizar usuarios</p>
+    <div className="container my-5">
+      <div className="card shadow-sm">
+        <div className="card-header card-header-administracion">
+          <h2 className="h3 mb-0">Panel de Administración</h2>
+        </div>
+        <div className="card-body">
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <p className="mb-0 text-muted">Gestión de usuarios registrados en la plataforma.</p>
+            <button className="btn btn-outline-secondary btn-sm" onClick={cargarUsuarios}>
+              Refrescar Lista
+            </button>
+          </div>
 
-          {loading ? (
-            <p>Cargando usuarios...</p>
+          {loadingData ? (
+            <div className="text-center p-4">
+              <div className="spinner-border text-success" role="status">
+                <span className="visually-hidden">Cargando...</span>
+              </div>
+            </div>
           ) : (
             <div className="table-responsive">
-              <table className="table">
-                <thead>
+              <table className="table table-admin table-hover align-middle">
+                <thead className="table-light">
                   <tr>
                     <th>ID</th>
-                    <th>Nombre</th>
+                    <th>Usuario</th>
                     <th>Email</th>
-                    <th>Rol</th>
+                    <th>Género</th>
+                    <th>Rol Actual</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {usuarios.map(u => (
-                    <tr key={u.id}>
-                      <td>{u.id}</td>
-                      <td>{u.nombre} {u.apellido || ''}</td>
-                      <td>{u.email}</td>
-                      <td>
-                        <select
-                          value={(editing[u.id]?.rol ?? u.rol ?? u.role ?? '')}
-                          onChange={(e) => handleChangeRol(u.id, e.target.value)}
-                          className="form-select form-select-sm"
-                          style={{ width: '140px' }}
-                        >
-                          <option value="">--</option>
-                          <option value="USER">USER</option>
-                          <option value="ADMIN">ADMIN</option>
-                        </select>
-                      </td>
-                      <td>
-                        <button className="btn btn-sm btn-success me-2" onClick={() => handleSave(u.id)}>Guardar</button>
-                        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(u.id)}>Eliminar</button>
-                      </td>
+                  {usuarios.length > 0 ? (
+                    usuarios.map((usuario) => (
+                      <tr key={usuario.id}>
+                        <td>{usuario.id}</td>
+                        <td>
+                          <div className="fw-bold">{usuario.nombre} {usuario.apellido}</div>
+                        </td>
+                        <td>{usuario.email}</td>
+                        <td>{usuario.genero}</td>
+                        <td>
+                          <select
+                            className="form-select form-select-sm"
+                            style={{ width: '120px', borderColor: editing[usuario.id] ? '#198754' : '' }}
+                            value={editing[usuario.id]?.rol || usuario.rol || 'USER'}
+                            onChange={(e) => handleRolChange(usuario.id, e.target.value)}
+                          >
+                            <option value="USER">USER</option>
+                            <option value="ADMIN">ADMIN</option>
+                          </select>
+                        </td>
+                        <td>
+                          <div className="btn-group">
+                            {editing[usuario.id] && (
+                              <button 
+                                className="btn btn-guardar btn-sm"
+                                onClick={() => handleSave(usuario.id)}
+                                title="Guardar cambios"
+                              >
+                                💾 Guardar
+                              </button>
+                            )}
+                            <button 
+                              className="btn btn-eliminar btn-sm"
+                              onClick={() => handleDelete(usuario.id)}
+                              title="Eliminar usuario"
+                              disabled={usuario.id === user.id} // Evitar auto-eliminación
+                            >
+                              🗑 Eliminar
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="text-center py-4">No se encontraron usuarios.</td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
-              {usuarios.length === 0 && <p>No hay usuarios para mostrar.</p>}
             </div>
           )}
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

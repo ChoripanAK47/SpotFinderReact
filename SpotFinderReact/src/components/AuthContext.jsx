@@ -10,8 +10,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true); // Para saber si estamos verificando sesión
 
   // URL base del backend (Asegúrate de que tu backend esté corriendo en este puerto)
-  //const API_URL = "http://localhost:8080/api/v1/usuarios";
-  const API_URL = "http://3.220.100.170:8080/api/v1/usuarios";
+  const API_URL = "http://localhost:8080/api/v1/usuarios";
+  //const API_URL = "http://3.220.100.170:8080/api/v1/usuarios";
 
   const fetchUserProfile = async (tokenToUse) => {
     try {
@@ -134,36 +134,29 @@ export const AuthProvider = ({ children }) => {
     if (!tokenToUse) return { success: false, message: 'No autorizado' };
 
     try {
-      const res = await fetch(`${API_URL}`, {
+      const res = await fetch(`${API_URL}`, { // GET a /api/v1/usuarios
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${tokenToUse}`,
           'Content-Type': 'application/json'
         }
       });
-
+      
       if (res.ok) {
         const data = await res.json();
         return { success: true, data };
-      } else if (res.status === 404) {
-        // tu controller devuelve 404 si no hay usuarios; tratamos como lista vacía
-        return { success: true, data: [] };
       } else {
-        const text = await res.text();
-        return { success: false, message: text || `Error ${res.status}` };
+        return { success: false, message: 'Error al obtener usuarios' };
       }
     } catch (error) {
-      console.error('fetchAllUsers error', error);
       return { success: false, message: 'Error de conexión' };
     }
   };
 
   const deleteUserById = async (id) => {
     const tokenToUse = token || localStorage.getItem('token');
-    if (!tokenToUse) return { success: false, message: 'No autorizado' };
-
     try {
-      // Endpoint: DELETE /api/v1/usuarios/delete?id={id}
+      // Endpoint coincide con tu Controller: /delete?id={id}
       const res = await fetch(`${API_URL}/delete?id=${encodeURIComponent(id)}`, {
         method: 'DELETE',
         headers: {
@@ -171,27 +164,18 @@ export const AuthProvider = ({ children }) => {
           'Content-Type': 'application/json'
         }
       });
-
-      if (res.ok || res.status === 204) {
-        return { success: true };
-      } else {
-        const text = await res.text();
-        return { success: false, message: text || `Error ${res.status}` };
-      }
+      if (res.ok || res.status === 204) return { success: true };
+      return { success: false, message: 'No se pudo eliminar' };
     } catch (error) {
-      console.error('deleteUserById error', error);
-      return { success: false, message: 'Error de conexión' };
+      return { success: false, message: error.message };
     }
   };
 
   const updateUserById = async (id, payload) => {
     const tokenToUse = token || localStorage.getItem('token');
-    if (!tokenToUse) return { success: false, message: 'No autorizado' };
-
     try {
-      // Controller espera PUT /api/v1/usuarios/update con el objeto Usuario en body
-      // Aseguramos incluir el id en el body si no viene
-      const bodyObj = { ...(payload || {}), id };
+      // El controller espera el objeto Usuario completo en el body
+      const bodyObj = { ...payload, id }; 
 
       const res = await fetch(`${API_URL}/update`, {
         method: 'PUT',
@@ -205,13 +189,10 @@ export const AuthProvider = ({ children }) => {
       if (res.ok) {
         const updated = await res.json();
         return { success: true, data: updated };
-      } else {
-        const text = await res.text();
-        return { success: false, message: text || `Error ${res.status}` };
       }
+      return { success: false, message: 'Error al actualizar' };
     } catch (error) {
-      console.error('updateUserById error', error);
-      return { success: false, message: 'Error de conexión' };
+      return { success: false, message: error.message };
     }
   };
 
